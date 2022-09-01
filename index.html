@@ -5,14 +5,13 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
     <title>Document</title>
 </head>
 
 <body>
-    <video id="their-video" autoplay></video>    
-    
-    <video id="my-video" muted="true" autoplay></video>
+    <a href="/invocador.html">unirse a sala</a>
+    <a href="/receptor.html">crear sala</a>
+
 </body>
 <script src="https://unpkg.com/peerjs@1.3.2/dist/peerjs.min.js"></script>
 <script>
@@ -24,9 +23,12 @@
 
     navigator.mediaDevices.getUserMedia({ video: false, audio: true })
         .then(function (stream) {
-            call = peer.call("3658542a-c63d-4aa3-ae5c-123c709a74e6", stream);
+            call = peer.call("73c5f9e3-05e9-4d77-b6be-f710fe40a82f", stream);
             call.on('stream', function (stream) { // B
-                //$('#their-video').prop('src', URL.createObjectURL(stream));
+                window.remoteAudio.srcObject = stream; // C
+                window.remoteAudio.autoplay = true; // D
+                window.peerStream = stream; //E
+                showConnectedContent(); //F    });
             })
         })
         .catch(function (err) {

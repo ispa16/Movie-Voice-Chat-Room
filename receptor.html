@@ -19,7 +19,9 @@
     });
     peer.on('call', function (call) {
         // Answer the call, providing our mediaStream
-        call.answer(mediaStream);
+        navigator.mediaDevices.getUserMedia({ video: false, audio: true })
+        .then(function (stream) {
+        call.answer(stream);});
     });
 </script>
 
