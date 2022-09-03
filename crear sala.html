@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.1.js"
+        integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <center>
+        <h1>Configuracion de su sala de cine</h1>
+    </center>
+    <br>
+    <label for="fname">Digite una clave unica para la sala de cine:</label>
+    <input type="text" id="clave" name="idRoom"><br>
+    <label for="fname">Link de la pelicula:</label>
+    <input type="text" id="link" name="idRoom"><br>
+    <label for="fname">Nombre de la sala:</label>
+    <input type="text" id="nombre" name="idRoom"><br>
+    <button onclick="">Crear Sala</button>
+
+</body>
+<script src="https://unpkg.com/peerjs@1.3.2/dist/peerjs.min.js"></script>
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.9.1/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.9.1/firebase-analytics.js";
+    //import { auth } from 'https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js'
+    import { collection, orderBy, getFirestore, doc, getDocs, onSnapshot, query, limit, where, updateDoc, addDoc } from "https://www.gstatic.com/firebasejs/9.9.1/firebase-firestore.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+        apiKey: "AIzaSyCNAGs57fyZC47gphecD-XmsKbcZMfK7Vg",
+        authDomain: "movie-2768b.firebaseapp.com",
+        projectId: "movie-2768b",
+        storageBucket: "movie-2768b.appspot.com",
+        messagingSenderId: "1057326711861",
+        appId: "1:1057326711861:web:f63052b3f095848d6c1d7c",
+        measurementId: "G-XRCB0HPX6P"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const analytics = getAnalytics(app);
+    $("button").click(function () {
+        async function crearSala() {
+            var clave = $("#clave").val();
+            console.log(clave)
+            var link = $("#link").val();
+            var nombre = $("#nombre").val();
+            const docRef = await addDoc(collection(db, "rooms"), {
+                onPlay: "false",
+                id: clave,
+                link: link,
+                nombre: nombre
+            });
+            // para un futuro usar el id generado por firestore como codigo de la sala jijiji
+            window.alert("documento creado con exito");
+            //console.log("Document written with ID: ", docRef.id);
+        }
+        crearSala();
+    });
+    //
+</script>
+<script>
+
+</script>
+
+</html>

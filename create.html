@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <!-- basic -->
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <!-- mobile metas -->
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+   <!-- site metas -->
+   <title>Movie Room Player</title>
+   <meta name="keywords" content="">
+   <meta name="description" content="">
+   <meta name="author" content="">
+   <!-- bootstrap css -->
+   <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+   <!-- style css -->
+   <link rel="stylesheet" type="text/css" href="css/style.css">
+   <!-- Responsive-->
+   <link rel="stylesheet" href="css/responsive.css">
+   <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
+      crossorigin="anonymous"></script>
+   <!-- fevicon -->
+   <link rel="icon" href="images/fevicon.png" type="image/gif" />
+   <!-- Scrollbar Custom CSS -->
+   <link rel="stylesheet" href="css/jquery.mCustomScrollbar.min.css">
+   <!-- Tweaks for older IEs-->
+   <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+   <!-- owl stylesheets -->
+   <link rel="stylesheet" href="css/owl.carousel.min.css">
+   <link rel="stylesheet" href="css/owl.theme.default.min.css">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css"
+      media="screen">
+   <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+   <!-- header section start -->
+   <div class="header_section">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+         <a class="logo" href="index.html"><img src="images/logo.png"></a>
+         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+         </button>
+         <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+               <li class="nav-item active">
+                  <a class="nav-link" href="index.html">Inicio</a>
+               </li>
+               <li class="nav-item">
+                  <a class="nav-link" href="create.html">Crear Sala</a>
+               </li>
+               <li class="nav-item">
+                  <a class="nav-link" href="join.html">Unirse a Sala</a>
+               </li>
+               <li class="nav-item">
+                  <a class="nav-link" href="celebs.html">Contacto</a>
+               </li>
+            </ul>
+
+         </div>
+      </nav>
+   </div>
+   <!-- header section end -->
+   <!-- movies section start -->
+   <div class="movies_section layout_padding">
+      <div class="container">
+         <div class="movies_menu">
+            <h1 style="color: white;">Configura tu sala de cine</h1>
+         </div>
+         <div style="height: 80vh; text-align: center; align-items: center;">
+            <label for="fname">Digite una clave unica para la sala de cine:</label><br>
+            <input type="text" id="clave" name="idRoom"><br>
+            <label for="fname">Link de la pelicula:</label><br>
+            <input type="text" id="link" name="idRoom"><br>
+            <label for="fname">Nombre de la sala:</label><br>
+            <input type="text" id="nombre" name="idRoom"><br>
+            <button style="width: 170px;
+            font-size: 18px;
+            color: #ffffff;
+            text-align: center;
+            background-color: #df9911;
+            padding: 7px 0px;
+            border-radius: 30px;
+            margin-top: 60px;" onclick="">Crear Sala</button><br><br><br>
+         </div>
+      </div>
+      <!-- movies section end -->
+      <!-- footer  section start -->
+      <div class="footer_section layout_padding">
+         <div class="container">
+
+            <div class="social_icon">
+               <ul>
+                  <li><a href="#"><img src="images/fb-icon.png"></a></li>
+                  <li><a href="#"><img src="images/twitter-icon.png"></a></li>
+                  <li><a href="#"><img src="images/linkedin-icon.png"></a></li>
+                  <li><a href="#"><img src="images/instagram-icon.png"></a></li>
+               </ul>
+            </div>
+         </div>
+      </div>
+      <!-- footer  section end -->
+      <!-- copyright section start 
+<div class="copyright_section">
+   <div class="container">
+      <div class="copyright_text">By ispa16 <a href="https://html.design">Free html
+            Templates</a></div>
+   </div>
+</div>  -->
+      <!-- copyright section end -->
+      <!-- Javascript files-->
+      <script src="https://unpkg.com/peerjs@1.3.2/dist/peerjs.min.js"></script>
+      <script type="module">
+         // Import the functions you need from the SDKs you need
+         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.9.1/firebase-app.js";
+         import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.9.1/firebase-analytics.js";
+         //import { auth } from 'https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js'
+         import { collection, orderBy, getFirestore, doc, getDocs, onSnapshot, query, limit, where, updateDoc, addDoc } from "https://www.gstatic.com/firebasejs/9.9.1/firebase-firestore.js";
+         // TODO: Add SDKs for Firebase products that you want to use
+         // https://firebase.google.com/docs/web/setup#available-libraries
+
+         // Your web app's Firebase configuration
+         // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+         const firebaseConfig = {
+            apiKey: "AIzaSyCNAGs57fyZC47gphecD-XmsKbcZMfK7Vg",
+            authDomain: "movie-2768b.firebaseapp.com",
+            projectId: "movie-2768b",
+            storageBucket: "movie-2768b.appspot.com",
+            messagingSenderId: "1057326711861",
+            appId: "1:1057326711861:web:f63052b3f095848d6c1d7c",
+            measurementId: "G-XRCB0HPX6P"
+         };
+
+         // Initialize Firebase
+         const app = initializeApp(firebaseConfig);
+         const db = getFirestore(app);
+         const analytics = getAnalytics(app);
+         $("button").click(function () {
+            async function crearSala() {
+               var clave = $("#clave").val();
+               console.log(clave)
+               var link = $("#link").val();
+               var nombre = $("#nombre").val();
+               const docRef = await addDoc(collection(db, "rooms"), {
+                  onPlay: "false",
+                  id: clave,
+                  link: link,
+                  nombre: nombre
+               });
+               // para un futuro usar el id generado por firestore como codigo de la sala jijiji
+               window.alert("documento creado con exito");
+               //console.log("Document written with ID: ", docRef.id);
+            }
+            crearSala();
+         });
+    //
+      </script>
+      <script>
+
+      </script>
+      <script src="js/popper.min.js"></script>
+      <script src="js/bootstrap.bundle.min.js"></script>
+      <!-- sidebar -->
+      <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+      <script src="js/custom.js"></script>
+      <!-- javascript -->
+      <script src="js/owl.carousel.js"></script>
+      <script src="https:cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+      <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+      <script>
+         $('#datepicker').datepicker({
+            uiLibrary: 'bootstrap4'
+         });
+      </script>
+</body>
+
+</html>
