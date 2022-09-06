@@ -82,6 +82,7 @@
             border-radius: 30px;
             margin-top: 60px;">Cargar sala</button>
             <br><br>
+            <h1 id="titulo"></h1>
             <video controls style="object-fit: fill; height: 60vh; width: 60vw;"></video><br>
 
          </div>
@@ -98,7 +99,7 @@
                padding: 7px 0px;
                border-radius: 30px;
                margin-top: 60px;">Iniciar llamada</a>
-
+            <video id="my-video"></video>
          </div>
       </div>
 
@@ -157,11 +158,22 @@
             var idPelic = $("#idSala").val();
             console.log(idPelic.toString());
             const q = query(collection(db, "rooms"), where("id", "==", idPelic.toString()));//, where("hour", ">", time));
+            if (q.empty) {
+               window.alert("no se ha encontrado una sala con ese id");
+            } else {
+               window.alert("sala cargada con exito");
+            }
             var docId;
             async function actualizar(id, boleano) {
                const docRef = doc(db, 'rooms', id);
                await updateDoc(docRef, {
                   onPlay: boleano
+               });
+            }
+            async function actualizarFullScreen(id, boleano) {
+               const docRef = doc(db, 'rooms', id);
+               await updateDoc(docRef, {
+                  fullScreen: boleano
                });
             }
             //funcion de carga de link
@@ -173,6 +185,20 @@
                video.load();
 
             }
+            function openFullscreen(myVideo) {
+               console.log("hitting")
+               var elem = myVideo
+               console.log(elem)
+               if (elem.requestFullscreen) {
+                  elem.requestFullscreen();
+               } else if (elem.mozRequestFullScreen) { /* Firefox */
+                  elem.mozRequestFullScreen();
+               } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+                  elem.webkitRequestFullscreen();
+               } else if (elem.msRequestFullscreen) { /* IE/Edge */
+                  elem.msRequestFullscreen();
+               }
+            }
             const unsubscribe = onSnapshot(q, (snapshot) => {
                snapshot.docChanges().forEach((change) => {
                   docId = change.doc.id;
@@ -180,16 +206,27 @@
                      //console.log("New city: i", change.doc.id);
                      //addData(myChart, change.doc.data().hour, change.doc.data().x);
                      cargarVideo(change.doc.data().link);
+                     $("#titulo").text(change.doc.data().nombre);
                      //"http://www.w3schools.com/html/mov_bbb.mp4"
                   }
                   if (change.type === "modified") {
                      console.log("Modified city: ", change.doc.data());
                      var play = change.doc.data().onPlay;
+                     var fullSc = change.doc.data().fullScreen;
                      if (play == "true") {
                         $('video').get(0).play()
                      } else {
                         $('video').get(0).pause()
                      }
+                     /* solo funciona si es que se hace un evento manual por el usuario
+                     if (fullSc == "true") {
+                        var myVideo = $("video")[0];
+                        openFullscreen(myVideo);
+                     } else {
+                        var myVideo = $("video")[0];
+                        openFullscreen(myVideo);
+                     }
+                     */
                   }
                   if (change.type === "removed") {
                      console.log("Removed city: ", change.doc.data());
@@ -203,6 +240,17 @@
             $('video').bind('pause', function (e) {
                console.log("pause");
                actualizar(docId, "false");
+            });
+            $('video').on('fullscreenchange webkitfullscreenchange mozfullscreenchange', function () {
+               var muted = document.fullscreenElement;
+               if (muted != null) {
+                  console.log("fullScrenn");
+                  //actualizarFullScreen(docId, "true")
+               } else {
+                  //actualizarFullScreen(docId, "false")
+                  console.log("noFullScrenn");
+               }
+               //console.log(muted);
             });
             //
          });
@@ -227,7 +275,9 @@
                .then(function (stream) {
                   call = peer.call(idPelic, stream);
                   call.on('stream', function (stream) { // B
-                     //$('#their-video').prop('src', URL.createObjectURL(stream));
+                     //$('#their-video').prop('src', URL.createObjectURL(stream))
+                     $('#my-video').prop('src', URL.createObjectURL(stream));
+                     window.localStream = stream;
                   })
                })
                .catch(function (err) {

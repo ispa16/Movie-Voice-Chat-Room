@@ -11,9 +11,20 @@
 </head>
 
 <body>
+<<<<<<< Updated upstream
     <video controls autoplay
             src="https://00f74ba44bac2dc7b2d7b0d62fd88880b797cecfc0-apidata.googleusercontent.com/download/storage/v1/b/vvtas/o/y91qOVoXX97?jk=AFshE3WzN1unl96OPzbaJafw2UCTJxFFmoqgqXkAGWe-5-bt2aIyA44ibnG-hj6m9i-YGR0wxrKgF7j8IKHQ7sLNw8WlYcv5KVNCRJW-eAc7NZSqUf_tfNnN3ZeO5u1x0egDWRi2yEU7ZEyeyj2A3rZFXK3N3QN4gXIkyIP0WrEynxPmrOIvTo0gQTFyhlvllSKKmhn7BS8dhDw-7bV7c-4DJtHtcT7cNrRb7g3_A9c6hKycYPVSLPKz_fmXH4DxAliY6pj03HO0pITz1Zxi-S1jwhOhhSQSwa2TukdZ71TZe00mSpvuR0B3PXKjm8_RoX_WFGw7pV7TqgUtvOO1Hy_RvQdSS75MhixfmrOK6kT2NeCoZM4eL3hncCUNhxBC7Ua8bdtRCLSOQAtabIs1Dg2q8v11OPc6Z_2qAqu8rX03Eh13uuQBVnglzPlmjd_0phOu0rC8LhZe8a--9ttKz4W5fbonZTr-tZUPOm4DRNwBlW8BCL3awtMw6fIvKutKRgNr6m9EIpnl0jehX_n3ktoTxfjPGccQWPr2MoahPioiSxtjKB-mKHyNF8WhHDawQfU8o-jlzTUxCrCXBFeL5wEZaTyDOiqV095phfu9C6u1t0W6hSKm0YcuGveNCuGGGh54vI7KCSUn63AHOuogUQFfBNsMehEDIENjHMyWDcYkj8ctOHTgTAk4Ju2CQf4SMuI-l51uaju5tbijOSvcZ5juYSVxlW2lpPEGIL-v2hGHy5kl7pgWUxQ7QlQJjMdtZBYRDaj2ujcfraEvDaLzt-MW0M-bjjnC2jpoMnpUuxQL2PRHtIuU_iP-YREuDCS8uUAX36etkA2cdr_ovj1Yct5HzRjCDFXQamDEjukFwzrSgBR4VEsIms6W95psiCZ6x145JfhkAIFp58vA2QpGF7-bh9kWIRWBiD0DXWQwI9DmGvPFzh6mPKWO022eTNeWZw4CLCV8K4vncgIIrBbwuWn2M5tv0gQ4B1Qalf1MHUL2z0CUA105RhzZo2-0XWc&isca=1"
            style="object-fit: fill;"></video>
+=======
+    <h1>Conectarse a una sala de peliculas:</h1>
+    <h2 id="h2Code"></h2>
+    <label for="fname">Id de sala:</label><br>
+    <input type="text" id="idSala" name="idRoom"><br>
+    <button onclick="">Entrar a la sala</button>
+    <br><br>
+    <video controls style="object-fit: fill;"></video><br>
+
+>>>>>>> Stashed changes
 </body>
 <script src="https://unpkg.com/peerjs@1.3.2/dist/peerjs.min.js"></script>
 <script type="module">
@@ -41,51 +52,67 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const analytics = getAnalytics(app);
-    const q = query(collection(db, "rooms"), where("id", "==", "sala01"));//, where("hour", ">", time));
-    var docId;
-    async function actualizar(id, boleano) {
-        const docRef = doc(db, 'rooms', id);
-        await updateDoc(docRef, {
-            onPlay: boleano
-        });
-    }
+    $("button").click(function () {
+        var idPelic = $("#idSala").val();
+        console.log(idPelic.toString());
+        const q = query(collection(db, "rooms"), where("id", "==", idPelic.toString()));//, where("hour", ">", time));
+        var docId;
+        async function actualizar(id, boleano) {
+            const docRef = doc(db, 'rooms', id);
+            await updateDoc(docRef, {
+                onPlay: boleano
+            });
+        }
+        //funcion de carga de link
+        function cargarVideo(url) {
+            var newfile = url;
+            var video = $("video")[0];
+            video.pause();
+            $("video").attr('src', newfile);
+            video.load();
 
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-        snapshot.docChanges().forEach((change) => {
-            docId = change.doc.id;
-            if (change.type === "added") {
-                //console.log("New city: i", change.doc.id);
-                //addData(myChart, change.doc.data().hour, change.doc.data().x);
-            }
-            if (change.type === "modified") {
-                console.log("Modified city: ", change.doc.data());
-                var play = change.doc.data().onPlay;
-                if (play == "true") {
-                    $('video').get(0).play()
-                } else {
-                    $('video').get(0).pause()
+        }
+        const unsubscribe = onSnapshot(q, (snapshot) => {
+            snapshot.docChanges().forEach((change) => {
+                docId = change.doc.id;
+                if (change.type === "added") {
+                    //console.log("New city: i", change.doc.id);
+                    //addData(myChart, change.doc.data().hour, change.doc.data().x);
+                    cargarVideo(change.doc.data().link);
+                    //"http://www.w3schools.com/html/mov_bbb.mp4"
                 }
-            }
-            if (change.type === "removed") {
-                console.log("Removed city: ", change.doc.data());
-            }
+                if (change.type === "modified") {
+                    console.log("Modified city: ", change.doc.data());
+                    var play = change.doc.data().onPlay;
+                    if (play == "true") {
+                        $('video').get(0).play()
+                    } else {
+                        $('video').get(0).pause()
+                    }
+                }
+                if (change.type === "removed") {
+                    console.log("Removed city: ", change.doc.data());
+                }
+            });
         });
+        $('video').bind('play', function (e) {
+            console.log("play");
+            actualizar(docId, "true");
+        });
+        $('video').bind('pause', function (e) {
+            console.log("pause");
+            actualizar(docId, "false");
+        });
+        //
     });
-    $('video').bind('play', function (e) {
-        console.log("play");
-        actualizar("XS5vlpA1Vl0lB2H6g3CP", "true");
-    });
-    $('video').bind('pause', function (e) {
-        console.log("pause");
-        actualizar("XS5vlpA1Vl0lB2H6g3CP", "false");
-    });
-    //docId
 </script>
 <script>
     var peer = new Peer();
     peer.on('open', function (id) {
         console.log('My peer ID is: ' + id);
+        $("#h2Code").text(id);
     });
+
     peer.on('call', function (call) {
         // Answer the call, providing our mediaStream
         navigator.mediaDevices.getUserMedia({ video: false, audio: true })

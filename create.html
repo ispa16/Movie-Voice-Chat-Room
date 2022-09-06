@@ -147,6 +147,7 @@
                var nombre = $("#nombre").val();
                const docRef = await addDoc(collection(db, "rooms"), {
                   onPlay: "false",
+                  fullScreen: "false",
                   id: clave,
                   link: link,
                   nombre: nombre
