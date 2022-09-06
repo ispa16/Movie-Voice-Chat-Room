@@ -17,6 +17,7 @@
    <!-- bootstrap css -->
    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
    <!-- style css -->
+   <link rel="stylesheet" href="css/home.css">
    <link rel="stylesheet" type="text/css" href="css/style.css">
    <!-- Responsive-->
    <link rel="stylesheet" href="css/responsive.css">
@@ -63,17 +64,18 @@
 
          </div>
       </nav>
-      <!-- header section end -->
-      <!-- arrival section start -->
-      <div class="arrival_section layout_padding">
-         <div class="container" style=" text-align: center; align-items: center;">
-            <h1>Conectarse a una sala de peliculas:</h1>
+   </div>
+   <!-- header section end -->
+   <!-- arrival section start -->
+   <div class="arrival_section layout_padding">
+      <div class="container" style=" text-align: center; align-items: center;">
+         <h1>Conectarse a una sala de peliculas:</h1>
 
-            <label for="fname">Id de sala:</label><br>
-            <input type="text" id="idSala" name="idRoom"><br><br>
-            <h4> Codigo para videollamada</h4>
-            <p id="h2Code"></p>
-            <button onclick="" style="width: 170px;
+         <label for="fname">Id de sala:</label><br>
+         <input type="text" id="idSala" name="idRoom"><br><br>
+         <h4> Codigo para videollamada</h4>
+         <p id="h2Code"></p>
+         <button id="button" onclick="" style="width: 170px;
             font-size: 18px;
             color: #ffffff;
             text-align: center;
@@ -81,224 +83,527 @@
             padding: 7px 0px;
             border-radius: 30px;
             margin-top: 60px;">Cargar sala</button>
-            <br><br>
-            <h1 id="titulo"></h1>
-            <video controls style="object-fit: fill; height: 60vh; width: 60vw;"></video><br>
+         <br><br>
+         <h1 id="titulo"></h1>
+         <video controls style="object-fit: fill; height: 60vh; width: 60vw;"></video><br>
 
-         </div>
-         <div style="  align-items: center; text-align: center;"><br><br><br>
-            <h1> Prueba de llamadas (solo voz)</h1>
-            <img style="height: 50%; width:50%;" src="images/gato.jpg"><br>
-            <label for="fname">Ingresar id a llamar:</label><br>
-            <input type="text" id="idLlamar" name="idRoom"><br><br>
-            <a id="llamar" style="width: 170px;
+      </div>
+      <div style="  align-items: center; text-align: center;"><br><br><br>
+         <h1> Prueba de llamadas (solo voz)</h1>
+         <img style="height: 50%; width:50%;" src="images/gato.jpg"><br>
+         <label for="fname">Ingresar id a llamar:</label><br>
+         <input type="text" id="idLlamar" name="idRoom"><br><br>
+         <button id="llamar" style="width: 170px;
                font-size: 18px;
                color: #ffffff;
                text-align: center;
                background-color: #df9911;
                padding: 7px 0px;
                border-radius: 30px;
-               margin-top: 60px;">Iniciar llamada</a>
-            <video id="my-video"></video>
-         </div>
+               margin-top: 60px;">Iniciar llamada</button>
       </div>
+      <div>
+         <div class="container" style="height: auto; width:auto;">
+            <div class="jumbotron">
+               <div class="videoCont">
+                  <video id="remoteVideo" width="100%" autoplay></video>
+                  <video id="localVideo" width="30%" muted autoplay></video>
+               </div>
+               <div id="hangupdiv">
+                  <button id="hangBtn" type="button" class="btn btn-danger btn-lg ">
+                     <span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span> Hangup
+                  </button>
+               </div>
+               <div id="rowCpyJumb" class="row" style="display: none;">
+                  <button id="btnCpyJumb" type="button" class="btn btn-success btn-md" data-trigger="focus"
+                     data-toggle="popover" data-placement="left"
+                     data-content="Copy the answer and send to your friend">Copy
+                     Answer</button>
+               </div>
+            </div>
+         </div>
 
-      <!-- arrival section end -->
-      <!-- footer  section start -->
-      <div class=" footer_section layout_padding">
-         <div class="container">
-
-            <div class="social_icon">
-               <ul>
-                  <li><a href="#"><img src="images/fb-icon.png"></a></li>
-                  <li><a href="#"><img src="images/twitter-icon.png"></a></li>
-                  <li><a href="#"><img src="images/linkedin-icon.png"></a></li>
-                  <li><a href="#"><img src="images/instagram-icon.png"></a></li>
-               </ul>
+         <!-- Modal -->
+         <div class="modal fade" id="textModal" tabindex="-1" role="dialog" data-keyboard="false"
+            aria-labelledby="myModalLabel" data-backdrop="static">
+            <div class="modal-dialog" role="document">
+               <div class="modal-content">
+                  <div class="modal-header">
+                     <h4 class="modal-title" id="myModalLabel">Configuracion Serverless VideoChat</h4>
+                  </div>
+                  <div class="modal-body">
+                     <div class="container-fluid">
+                        <div class="row">
+                           <div class="col">
+                              <textarea id="desc" class="form-control" rows="6"
+                                 placeholder="Click the call button to initiate a call or paste the code given by your friend and click join."
+                                 data-trigger="manual" data-toggle="popover" data-placement="left"
+                                 data-content="Now ask your friend to paste this code in his/her window and click join."></textarea>
+                           </div>
+                        </div>
+                        <div id="rowCpy" class="row" style="margin-top: 1rem;display: none;">
+                           <div class="col">
+                              <button id="btnCpy" type="button" class="btn btn-success btn-md">Copy</button>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="modal-footer">
+                     <div class="modal-footer-but">
+                        <button id="callBtn" type="button" class="btn btn-success btn-lg ">
+                           <span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> Call
+                        </button>
+                        <button id="joinBtn" type="button" class="btn btn-info btn-lg ">
+                           <span class="glyphicon glyphicon-random" aria-hidden="true"></span> Join
+                        </button>
+                        <button id="closeBtn" type="button" class="btn btn-danger btn-lg ">
+                           <span class="glyphicon glyphicon-random" aria-hidden="true"></span> Close
+                        </button>
+                     </div>
+                  </div>
+               </div>
             </div>
          </div>
       </div>
-      <!-- footer  section end -->
-      <!-- copyright section start 
+   </div>
+
+   <!-- arrival section end -->
+
+
+   <!-- footer  section start -->
+   <div class=" footer_section layout_padding">
+      <div class="container">
+
+         <div class="social_icon">
+            <ul>
+               <li><a href="#"><img src="images/fb-icon.png"></a></li>
+               <li><a href="#"><img src="images/twitter-icon.png"></a></li>
+               <li><a href="#"><img src="images/linkedin-icon.png"></a></li>
+               <li><a href="#"><img src="images/instagram-icon.png"></a></li>
+            </ul>
+         </div>
+      </div>
+   </div>
+
+
+
+   <!-- footer  section end -->
+   <!-- copyright section start 
 <div class="copyright_section">
 <div class="container">
    <div class="copyright_text">By ispa16 <a href="https://html.design">Free html
          Templates</a></div>
 </div>
 </div>  -->
-      <!-- copyright section end -->
-      <!-- Javascript files-->
-      <script src="https://unpkg.com/peerjs@1.3.2/dist/peerjs.min.js"></script>
-      <script type="module">
-         // Import the functions you need from the SDKs you need
-         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.9.1/firebase-app.js";
-         import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.9.1/firebase-analytics.js";
-         //import { auth } from 'https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js'
-         import { collection, orderBy, getFirestore, doc, getDocs, onSnapshot, query, limit, where, updateDoc } from "https://www.gstatic.com/firebasejs/9.9.1/firebase-firestore.js";
-         // TODO: Add SDKs for Firebase products that you want to use
-         // https://firebase.google.com/docs/web/setup#available-libraries
+   <!-- copyright section end -->
+   <!-- Javascript files-->
+   <script>
+      $(document).ready(function () {
+         $("#llamar").click(function () {
+            $("#textModal").modal('show');
+         });
+         $("#closeBtn").click(function () {
+            $("#textModal").modal('hide');
+         });
+      });
+   </script>
+   <script src="https://unpkg.com/peerjs@1.3.2/dist/peerjs.min.js"></script>
+   <script type="module">
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.9.1/firebase-app.js";
+      import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.9.1/firebase-analytics.js";
+      //import { auth } from 'https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js'
+      import { collection, orderBy, getFirestore, doc, getDocs, onSnapshot, query, limit, where, updateDoc } from "https://www.gstatic.com/firebasejs/9.9.1/firebase-firestore.js";
+      // TODO: Add SDKs for Firebase products that you want to use
+      // https://firebase.google.com/docs/web/setup#available-libraries
 
-         // Your web app's Firebase configuration
-         // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-         const firebaseConfig = {
-            apiKey: "AIzaSyCNAGs57fyZC47gphecD-XmsKbcZMfK7Vg",
-            authDomain: "movie-2768b.firebaseapp.com",
-            projectId: "movie-2768b",
-            storageBucket: "movie-2768b.appspot.com",
-            messagingSenderId: "1057326711861",
-            appId: "1:1057326711861:web:f63052b3f095848d6c1d7c",
-            measurementId: "G-XRCB0HPX6P"
+      // Your web app's Firebase configuration
+      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+      const firebaseConfig = {
+         apiKey: "AIzaSyCNAGs57fyZC47gphecD-XmsKbcZMfK7Vg",
+         authDomain: "movie-2768b.firebaseapp.com",
+         projectId: "movie-2768b",
+         storageBucket: "movie-2768b.appspot.com",
+         messagingSenderId: "1057326711861",
+         appId: "1:1057326711861:web:f63052b3f095848d6c1d7c",
+         measurementId: "G-XRCB0HPX6P"
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      const analytics = getAnalytics(app);
+      $("#button").click(function () {
+         var idPelic = $("#idSala").val();
+         console.log(idPelic.toString());
+         const q = query(collection(db, "rooms"), where("id", "==", idPelic.toString()));//, where("hour", ">", time));
+         if (q.empty) {
+            window.alert("no se ha encontrado una sala con ese id");
+         } else {
+            window.alert("sala cargada con exito");
+         }
+         var docId;
+         async function actualizar(id, boleano) {
+            const docRef = doc(db, 'rooms', id);
+            await updateDoc(docRef, {
+               onPlay: boleano
+            });
+         }
+         async function actualizarFullScreen(id, boleano) {
+            const docRef = doc(db, 'rooms', id);
+            await updateDoc(docRef, {
+               fullScreen: boleano
+            });
+         }
+         //funcion de carga de link
+         function cargarVideo(url) {
+            var newfile = url;
+            var video = $("video")[0];
+            video.pause();
+            $("video").attr('src', newfile);
+            video.load();
+
+         }
+         function openFullscreen(myVideo) {
+            console.log("hitting")
+            var elem = myVideo
+            console.log(elem)
+            if (elem.requestFullscreen) {
+               elem.requestFullscreen();
+            } else if (elem.mozRequestFullScreen) { /* Firefox */
+               elem.mozRequestFullScreen();
+            } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+               elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) { /* IE/Edge */
+               elem.msRequestFullscreen();
+            }
+         }
+         const unsubscribe = onSnapshot(q, (snapshot) => {
+            snapshot.docChanges().forEach((change) => {
+               docId = change.doc.id;
+               if (change.type === "added") {
+                  //console.log("New city: i", change.doc.id);
+                  //addData(myChart, change.doc.data().hour, change.doc.data().x);
+                  cargarVideo(change.doc.data().link);
+                  $("#titulo").text(change.doc.data().nombre);
+                  //"http://www.w3schools.com/html/mov_bbb.mp4"
+               }
+               if (change.type === "modified") {
+                  console.log("Modified city: ", change.doc.data());
+                  var play = change.doc.data().onPlay;
+                  var fullSc = change.doc.data().fullScreen;
+                  if (play == "true") {
+                     $('video').get(0).play()
+                  } else {
+                     $('video').get(0).pause()
+                  }
+                  /* solo funciona si es que se hace un evento manual por el usuario
+                  if (fullSc == "true") {
+                     var myVideo = $("video")[0];
+                     openFullscreen(myVideo);
+                  } else {
+                     var myVideo = $("video")[0];
+                     openFullscreen(myVideo);
+                  }
+                  */
+               }
+               if (change.type === "removed") {
+                  console.log("Removed city: ", change.doc.data());
+               }
+            });
+         });
+         $('video').bind('play', function (e) {
+            console.log("play");
+            actualizar(docId, "true");
+         });
+         $('video').bind('pause', function (e) {
+            console.log("pause");
+            actualizar(docId, "false");
+         });
+         $('video').on('fullscreenchange webkitfullscreenchange mozfullscreenchange', function () {
+            var muted = document.fullscreenElement;
+            if (muted != null) {
+               console.log("fullScrenn");
+               //actualizarFullScreen(docId, "true")
+            } else {
+               //actualizarFullScreen(docId, "false")
+               console.log("noFullScrenn");
+            }
+            //console.log(muted);
+         });
+         //
+      });
+   </script>
+   <script>
+      var peer = new Peer();
+      peer.on('open', function (id) {
+         console.log('My peer ID is: ' + id);
+         $("#h2Code").text(id);
+      });
+
+      peer.on('call', function (call) {
+         // Answer the call, providing our mediaStream
+         navigator.mediaDevices.getUserMedia({ video: false, audio: true })
+            .then(function (stream) {
+               call.answer(stream);
+            });
+      });
+      $("#noUsado").click(function () {
+         var idPelic = $("#idLlamar").val();
+         navigator.mediaDevices.getUserMedia({ video: false, audio: true })
+            .then(function (stream) {
+               call = peer.call(idPelic, stream);
+               call.on('stream', function (stream) { // B
+                  //$('#their-video').prop('src', URL.createObjectURL(stream))
+
+               })
+            })
+            .catch(function (err) {
+               console.log("error: " + err);
+            });
+      });
+      var App = (function () {
+         var servers = {
+            "iceServers": [{
+               url: 'stun:stun.l.google.com:19302'
+            }]
+         },
+
+            signalData = { "desc": null, "ice": [] },
+            peerConnection,
+            localVideo = document.getElementById("localVideo"),
+            localStream = null,
+            remoteVideo = document.getElementById("remoteVideo"),
+            txtBox = $("#desc"),
+            cpyRow = $("#rowCpy"),
+            cpyJumbRow = $("#rowCpyJumb"),
+            cpyJumBtn = $("#btnCpyJumb")
+
+         var
+
+            getPeerConnection = function () {
+               peerConnection = new RTCPeerConnection(servers);
+               peerConnection.onaddstream = gotRemoteStream;
+               peerConnection.onicecandidate = gotIceCandidate;
+               peerConnection.oniceconnectionstatechange = onConnectionStatusChange;
+               peerConnection.onsignalingstatechange = (event) => {
+                  console.log("Signaling change");
+                  console.log(event);
+               }
+            },
+
+            getMediaStream = function (callback) {
+               navigator.mediaDevices.getUserMedia(
+                  {
+                     audio: true,
+                     video: true
+                  }).then(function (stream) {
+                     localStream = stream;
+                     callback(stream);
+                  }).catch(function (error) {
+                     console.log("getUserMedia error: ", error);
+                  });
+            },
+
+            joinSession = function () {
+               if (peerConnection == null) {
+                  getPeerConnection();
+               }
+
+               var sigdata = JSON.parse(txtBox.val().trim());
+               if (sigdata["desc"] == "") {
+                  alert("Please enter the offer");
+                  return;
+               }
+               cpyRow.show();
+               getMediaStream(createAnswer);
+            },
+
+            createOffer = function (stream) {
+               localVideo.srcObject = stream;
+               peerConnection.addStream(stream);
+               peerConnection.createOffer(onConnection, handleError);
+               txtBox.popover('show');
+               cpyRow.show();
+            },
+
+            initiateOffer = function () {
+               if (peerConnection == null) {
+                  getPeerConnection();
+               }
+               getMediaStream(createOffer);
+            },
+
+            onConnection = function (desc) {
+               console.log("Description is " + desc.sdp);
+               peerConnection.setLocalDescription(desc);
+               signalData["desc"] = desc;
+               //Change the event on click of Join Button to Complete Handshake on Initiator Side
+               $("#joinBtn").off("click").on("click", completeHandshake);
+
+            },
+
+            createAnswer = function (stream) {
+               var sigdata = JSON.parse(txtBox.val().trim());
+               localVideo.srcObject = stream;
+               peerConnection.addStream(stream);
+               peerConnection.setRemoteDescription(new RTCSessionDescription(sigdata["desc"]), function () { console.log("Success"); }, handleError);
+               peerConnection.createAnswer(sendReply, handleError);
+               addIceCandidates(sigdata["ice"]);
+               txtBox.popover("show");
+            },
+
+            completeHandshake = function () {
+
+               console.log("Inside complete handshake");
+               var sigdata = document.getElementById("desc").value.trim();
+               sigdata = JSON.parse(sigdata)
+               if (!sigdata["desc"]) {
+                  alert("Please enter the answer");
+                  return;
+               }
+               peerConnection.setRemoteDescription(new RTCSessionDescription(sigdata["desc"]), function () { console.log("Success"); }, handleError);
+               addIceCandidates(sigdata["ice"]);
+
+            },
+
+            sendReply = function (desc) {
+               peerConnection.setLocalDescription(desc);
+               signalData["desc"] = desc;
+               console.log(JSON.stringify(signalData));
+               cpyJumbRow.show();
+               cpyJumBtn.popover('show');
+            },
+
+
+            gotIceCandidate = function (event) {
+               if (event.candidate) {
+                  signalData["ice"].push(event.candidate);
+                  document.getElementById("desc").value = JSON.stringify(signalData);
+               }
+            },
+
+            addIceCandidates = function (canArr) {
+               for (var i in canArr) {
+                  peerConnection.addIceCandidate(new RTCIceCandidate(canArr[i]));
+               }
+            },
+
+            handleError = function (err) {
+               console.log("Error occured " + err);
+            },
+
+
+            closeCall = function () {
+               peerConnection.close();
+               //peerConnection=null;
+
+               txtBox.popover('hide');
+               txtBox.val('');
+               localVideo.pause();
+               remoteVideo.pause();
+               localStream = null;
+               $(localVideo).hide();
+               showModal();
+            },
+
+            showModal = function () {
+               $("#textModal").modal('show');
+            },
+
+            hideModal = function () {
+               $("#textModal").modal('hide');
+            },
+
+            onConnectionStatusChange = function (event) {
+               switch (peerConnection.iceConnectionState) {
+                  case 'checking':
+                     console.log('Connecting to peer...');
+                     break;
+                  case 'connected': // on caller side
+                     console.log('Connection established.');
+                     $('#textModal').modal('hide');
+                     $("#localVideo").show();
+                     $("#hangupdiv").show();
+                     break;
+                  case 'disconnected':
+                     console.log('Disconnected.');
+                     closeCall();
+                     break;
+                  case 'failed':
+                     console.log('Failed.');
+                     break;
+                  case 'closed':
+                     console.log('Connection closed.');
+                     peerConnection = null;
+                     $("#joinBtn").off("click").on("click", joinSession);
+                     break;
+               }
+            },
+
+            gotRemoteStream = function (event) {
+               console.log("Received remote stream");
+               remoteVideo.srcObject = event.stream;
+            },
+            copyText = function () {
+               var copyText = document.getElementById("desc");
+               copyText.select();
+               copyText.setSelectionRange(0, 99999);
+               document.execCommand("copy");
+            },
+            copyText2 = function () {
+               var $temp = $("<input>");
+               $("body").append($temp);
+               $temp.val($("#desc").val()).select();
+               document.execCommand("copy");
+               $temp.remove();
+            },
+            attachEvents = function () {
+               $("#callBtn").on("click", initiateOffer);
+               $("#joinBtn").on("click", joinSession);
+               $("#hangBtn").on("click", closeCall);
+               $("#btnCpy").on("click", copyText);
+               $("#btnCpyJumb").on("click", copyText2);
+            },
+
+            init = function () {
+               getPeerConnection();
+               attachEvents();
+               showModal();
+            }
+
+         return {
+            init: init
          };
 
-         // Initialize Firebase
-         const app = initializeApp(firebaseConfig);
-         const db = getFirestore(app);
-         const analytics = getAnalytics(app);
-         $("button").click(function () {
-            var idPelic = $("#idSala").val();
-            console.log(idPelic.toString());
-            const q = query(collection(db, "rooms"), where("id", "==", idPelic.toString()));//, where("hour", ">", time));
-            if (q.empty) {
-               window.alert("no se ha encontrado una sala con ese id");
-            } else {
-               window.alert("sala cargada con exito");
-            }
-            var docId;
-            async function actualizar(id, boleano) {
-               const docRef = doc(db, 'rooms', id);
-               await updateDoc(docRef, {
-                  onPlay: boleano
-               });
-            }
-            async function actualizarFullScreen(id, boleano) {
-               const docRef = doc(db, 'rooms', id);
-               await updateDoc(docRef, {
-                  fullScreen: boleano
-               });
-            }
-            //funcion de carga de link
-            function cargarVideo(url) {
-               var newfile = url;
-               var video = $("video")[0];
-               video.pause();
-               $("video").attr('src', newfile);
-               video.load();
+      })();
 
-            }
-            function openFullscreen(myVideo) {
-               console.log("hitting")
-               var elem = myVideo
-               console.log(elem)
-               if (elem.requestFullscreen) {
-                  elem.requestFullscreen();
-               } else if (elem.mozRequestFullScreen) { /* Firefox */
-                  elem.mozRequestFullScreen();
-               } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
-                  elem.webkitRequestFullscreen();
-               } else if (elem.msRequestFullscreen) { /* IE/Edge */
-                  elem.msRequestFullscreen();
-               }
-            }
-            const unsubscribe = onSnapshot(q, (snapshot) => {
-               snapshot.docChanges().forEach((change) => {
-                  docId = change.doc.id;
-                  if (change.type === "added") {
-                     //console.log("New city: i", change.doc.id);
-                     //addData(myChart, change.doc.data().hour, change.doc.data().x);
-                     cargarVideo(change.doc.data().link);
-                     $("#titulo").text(change.doc.data().nombre);
-                     //"http://www.w3schools.com/html/mov_bbb.mp4"
-                  }
-                  if (change.type === "modified") {
-                     console.log("Modified city: ", change.doc.data());
-                     var play = change.doc.data().onPlay;
-                     var fullSc = change.doc.data().fullScreen;
-                     if (play == "true") {
-                        $('video').get(0).play()
-                     } else {
-                        $('video').get(0).pause()
-                     }
-                     /* solo funciona si es que se hace un evento manual por el usuario
-                     if (fullSc == "true") {
-                        var myVideo = $("video")[0];
-                        openFullscreen(myVideo);
-                     } else {
-                        var myVideo = $("video")[0];
-                        openFullscreen(myVideo);
-                     }
-                     */
-                  }
-                  if (change.type === "removed") {
-                     console.log("Removed city: ", change.doc.data());
-                  }
-               });
-            });
-            $('video').bind('play', function (e) {
-               console.log("play");
-               actualizar(docId, "true");
-            });
-            $('video').bind('pause', function (e) {
-               console.log("pause");
-               actualizar(docId, "false");
-            });
-            $('video').on('fullscreenchange webkitfullscreenchange mozfullscreenchange', function () {
-               var muted = document.fullscreenElement;
-               if (muted != null) {
-                  console.log("fullScrenn");
-                  //actualizarFullScreen(docId, "true")
-               } else {
-                  //actualizarFullScreen(docId, "false")
-                  console.log("noFullScrenn");
-               }
-               //console.log(muted);
-            });
-            //
-         });
-      </script>
-      <script>
-         var peer = new Peer();
-         peer.on('open', function (id) {
-            console.log('My peer ID is: ' + id);
-            $("#h2Code").text(id);
-         });
 
-         peer.on('call', function (call) {
-            // Answer the call, providing our mediaStream
-            navigator.mediaDevices.getUserMedia({ video: false, audio: true })
-               .then(function (stream) {
-                  call.answer(stream);
-               });
-         });
-         $("#llamar").click(function () {
-            var idPelic = $("#idLlamar").val();
-            navigator.mediaDevices.getUserMedia({ video: false, audio: true })
-               .then(function (stream) {
-                  call = peer.call(idPelic, stream);
-                  call.on('stream', function (stream) { // B
-                     //$('#their-video').prop('src', URL.createObjectURL(stream))
-                     $('#my-video').prop('src', URL.createObjectURL(stream));
-                     window.localStream = stream;
-                  })
-               })
-               .catch(function (err) {
-                  console.log("error: " + err);
-               });
-         });
-      </script>
-      <script src="js/popper.min.js"></script>
-      <script src="js/bootstrap.bundle.min.js"></script>
-      <!-- sidebar -->
-      <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
-      <script src="js/custom.js"></script>
-      <!-- javascript -->
-      <script src="js/owl.carousel.js"></script>
-      <script src="https:cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
-      <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
-      <script>
-         $('#datepicker').datepicker({
-            uiLibrary: 'bootstrap4'
-         });
-      </script>
+
+      $(document).ready(function () {
+
+
+         App.init();
+
+      });
+
+
+
+   </script>
+   <script src="js/popper.min.js"></script>
+   <script src="js/bootstrap.bundle.min.js"></script>
+   <!-- sidebar -->
+   <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+   <script src="js/custom.js"></script>
+   <!-- javascript -->
+   <script src="js/owl.carousel.js"></script>
+   <script src="https:cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+   <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+   <script>
+      $('#datepicker').datepicker({
+         uiLibrary: 'bootstrap4'
+      });
+   </script>
 </body>
 
 </html>
