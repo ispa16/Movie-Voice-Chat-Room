@@ -102,7 +102,27 @@
                   boton.textContent = 'Activar Interacción';
                }
             }
+            function alternarInteraccion2() {
+               var reproductor = document.getElementById('reproductor');
+               var boton = document.getElementById('boton-interaccion');
 
+               if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement) {
+                  // Modo de pantalla completa
+                  reproductor.setAttribute('disabled', 'disabled');
+                  reproductor.removeAttribute('controls');
+                  boton.style.display = 'none';
+               } else {
+                  // No está en modo de pantalla completa
+                  reproductor.removeAttribute('disabled');
+                  reproductor.setAttribute('controls', 'controls');
+                  boton.style.display = 'block';
+               }
+            }
+
+            document.addEventListener('fullscreenchange', alternarInteraccion2);
+            document.addEventListener('webkitfullscreenchange', alternarInteraccion2);
+            document.addEventListener('mozfullscreenchange', alternarInteraccion2);
+            document.addEventListener('MSFullscreenChange', alternarInteraccion2);
          </script>
       </div>
       <div style="  align-items: center; text-align: center;"><br><br><br>
