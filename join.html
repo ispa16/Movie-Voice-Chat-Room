@@ -85,8 +85,25 @@
             margin-top: 60px;">Cargar sala</button>
          <br><br>
          <h1 id="titulo"></h1>
-         <video controls style="object-fit: fill; height: 60vh; width: 60vw;"></video><br>
+         <video id="reproductor" controls style="object-fit: fill; height: 60vh; width: 60vw;"></video><br>
+         <button id="boton-interaccion" onclick="alternarInteraccion()">Activar/Desactivar Interacción</button>
+         <script>
+            function alternarInteraccion() {
+               var reproductor = document.getElementById('reproductor');
+               var boton = document.getElementById('boton-interaccion');
 
+               if (reproductor.hasAttribute('disabled')) {
+                  reproductor.removeAttribute('disabled');
+                  reproductor.setAttribute('controls', 'controls');
+                  boton.textContent = 'Desactivar Interacción';
+               } else {
+                  reproductor.setAttribute('disabled', 'disabled');
+                  reproductor.removeAttribute('controls');
+                  boton.textContent = 'Activar Interacción';
+               }
+            }
+
+         </script>
       </div>
       <div style="  align-items: center; text-align: center;"><br><br><br>
          <h1> Prueba de llamadas (solo voz)</h1>
